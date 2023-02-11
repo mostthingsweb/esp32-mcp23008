@@ -39,13 +39,13 @@ static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     i2c_master_write_byte(cmd, reg, ACK_CHECK_EN);
     i2c_master_stop(cmd);
 
-    esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_RATE_MS);
+    esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
     if( ret != ESP_OK ) {
         ESP_LOGE(TAG,"Error reading register %d",reg);
         return ESP_FAIL;
     }
-    vTaskDelay(30/portTICK_RATE_MS);
+    vTaskDelay(30/portTICK_PERIOD_MS);
 
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -53,7 +53,7 @@ static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     i2c_master_read_byte(cmd, d, ACK_VAL);
     i2c_master_stop(cmd);
 
-    ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_RATE_MS);
+    ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
     if( ret != ESP_OK ) {
         ESP_LOGE(TAG,"Error reading register %d",reg);
@@ -73,7 +73,7 @@ static esp_err_t mcp23008_write_reg(mcp23008_t *mcp, uint8_t reg, uint8_t d) {
     i2c_master_write_byte(cmd, d, ACK_CHECK_EN);
     i2c_master_stop(cmd);
 
-    esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_RATE_MS);
+    esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
     if( ret != ESP_OK ) {
         ESP_LOGE(TAG,"Error writing register %d",reg);
@@ -173,7 +173,7 @@ esp_err_t mcp23008_port_clear_bit(mcp23008_t *mcp, uint8_t b) {
 
 esp_err_t mcp23008_toggle_bit(mcp23008_t *mcp, uint8_t b) {
     mcp->current ^= (1 << b);
-    return mcp23008_write_port(mcp, mcp->current); 
+    return mcp23008_write_port(mcp, mcp->current);
 }
 
 
