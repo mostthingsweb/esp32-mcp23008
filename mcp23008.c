@@ -157,7 +157,7 @@ esp_err_t mcp23008_read_pullups(mcp23008_t *mcp, uint8_t *pu) {
 }
 
 esp_err_t mcp23008_port_set_bit(mcp23008_t *mcp, uint8_t b) {
-    mcp->current &= (1 << b);
+    mcp->current |= (1 << b);
     return mcp23008_write_port(mcp, mcp->current);
 }
 
