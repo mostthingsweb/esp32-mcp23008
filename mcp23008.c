@@ -24,19 +24,14 @@
 
 #define CHECK_ARG(VAL) do { if (!(VAL)) return ESP_ERR_INVALID_ARG; } while (0)
 
-#define ACK_CHECK_EN 0x1            /*!< I2C master will check ack from slave*/
-#define ACK_CHECK_DIS 0x0           /*!< I2C master will not check ack from slave */
-#define ACK_VAL    0x0         /*!< I2C ack value */
-#define NACK_VAL   0x1         /*!< I2C nack value */
-
 static const char *TAG = "MCP23008";
 
 static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     CHECK_ARG(mcp);
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
-    i2c_master_write_byte(cmd, reg, ACK_CHECK_EN);
+    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_WRITE, I2C_MASTER_ACK);
+    i2c_master_write_byte(cmd, reg, I2C_MASTER_ACK);
     i2c_master_stop(cmd);
 
     esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
@@ -49,7 +44,7 @@ static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
 
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_READ, ACK_CHECK_EN);
+    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_READ, I2C_MASTER_ACK);
     i2c_master_read_byte(cmd, d, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
 
@@ -68,9 +63,9 @@ static esp_err_t mcp23008_write_reg(mcp23008_t *mcp, uint8_t reg, uint8_t d) {
     ESP_LOGI(TAG,"write reg MCP port %d address %d", mcp->port, mcp->address);
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_WRITE, ACK_CHECK_EN);
-    i2c_master_write_byte(cmd, reg, ACK_CHECK_EN);
-    i2c_master_write_byte(cmd, d, ACK_CHECK_EN);
+    i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_WRITE, I2C_MASTER_ACK);
+    i2c_master_write_byte(cmd, reg, I2C_MASTER_ACK);
+    i2c_master_write_byte(cmd, d, I2C_MASTER_ACK);
     i2c_master_stop(cmd);
 
     esp_err_t ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
