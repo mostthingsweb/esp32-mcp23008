@@ -50,7 +50,7 @@ static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
     i2c_master_write_byte(cmd, (mcp->address << 1) | I2C_MASTER_READ, ACK_CHECK_EN);
-    i2c_master_read_byte(cmd, d, ACK_VAL);
+    i2c_master_read_byte(cmd, d, I2C_MASTER_LAST_NACK);
     i2c_master_stop(cmd);
 
     ret = i2c_master_cmd_begin(mcp->port, cmd, 1000/portTICK_PERIOD_MS);
