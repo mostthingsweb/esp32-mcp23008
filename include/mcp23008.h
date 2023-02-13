@@ -28,6 +28,9 @@ typedef struct {
     uint8_t current;    /**< Currently (known) value of the GPIO port */
 } mcp23008_t;
 
+esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d);
+esp_err_t mcp23008_write_reg(mcp23008_t *mcp, uint8_t reg, uint8_t d);
+
 /**
  * @brief Initialize the MCP23008
  * @param mcp Pointer to the device structure

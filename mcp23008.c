@@ -26,7 +26,7 @@
 
 static const char *TAG = "MCP23008";
 
-static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
+esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     CHECK_ARG(mcp);
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -57,7 +57,7 @@ static esp_err_t mcp23008_read_reg(mcp23008_t *mcp, uint8_t reg, uint8_t *d) {
     return ESP_OK;
 }
 
-static esp_err_t mcp23008_write_reg(mcp23008_t *mcp, uint8_t reg, uint8_t d) {
+esp_err_t mcp23008_write_reg(mcp23008_t *mcp, uint8_t reg, uint8_t d) {
     CHECK_ARG(mcp);
 
     ESP_LOGI(TAG,"write reg MCP port %d address %d", mcp->port, mcp->address);
