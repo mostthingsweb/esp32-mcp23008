@@ -5,7 +5,7 @@ dependencies:
     version: ">=4.0.0"
 
   i2c_manager:
-    git: "https://github.com/mostthingsweb/esp_i2c_helper.git"
+    git: "https://github.com/mostthingsweb/i2c_manager.git"
   # # Put list of dependencies here
   # # For components maintained by Espressif:
   # component: "~1.0.0"
